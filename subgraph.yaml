@@ -1,0 +1,38 @@
+specVersion: 0.0.1
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: NakshMarketplace
+    network: mumbai
+    source:
+      address: "0xa498DC2D425d74C6c63C9A5b9075b6d0ef2C279b"
+      abi: NakshMarketplace
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Bidding
+        - EndedAuction
+        - OwnershipTransferred
+        - SalePriceSet
+        - Sold
+        - StartedAuction
+      abis:
+        - name: NakshMarketplace
+          file: ./abis/NakshMarketplace.json
+      eventHandlers:
+        - event: Bidding(address,uint256,address,uint256,uint256)
+          handler: handleBidding
+        - event: EndedAuction(address,uint256,address,uint256,uint256)
+          handler: handleEndedAuction
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: SalePriceSet(address,uint256,uint256,bool,uint8)
+          handler: handleSalePriceSet
+        - event: Sold(address,address,address,uint256,uint256,uint256)
+          handler: handleSold
+        - event: StartedAuction(address,uint256,uint256,uint256,address,uint256)
+          handler: handleStartedAuction
+      file: ./src/naksh-marketplace.ts
