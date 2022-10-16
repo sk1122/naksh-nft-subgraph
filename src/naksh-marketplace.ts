@@ -1,4 +1,4 @@
-import { BigInt } from "@graphprotocol/graph-ts"
+import { BigInt, store } from "@graphprotocol/graph-ts"
 import {
   NakshMarketplace,
   Bidding,
@@ -8,67 +8,104 @@ import {
   Sold,
   StartedAuction
 } from "../generated/NakshMarketplace/NakshMarketplace"
-import { ExampleEntity } from "../generated/schema"
+import { BidHistory, NFTAuction, NFTData, SaleData, SoldNFT } from "../generated/schema"
 
 export function handleBidding(event: Bidding): void {
-  // Entities can be loaded from the store using a string ID; this ID
-  // needs to be unique across all entities of the same type
-  let entity = ExampleEntity.load(event.transaction.from.toHex())
+  let bid = new BidHistory(`${event.params._bidder.toHexString()}-${event.params._tokenId.toString()}`)
 
-  // Entities only exist after they have been saved to the store;
-  // `null` checks allow to create entities on demand
-  if (!entity) {
-    entity = new ExampleEntity(event.transaction.from.toHex())
+  bid.bidder = event.params._bidder
+  bid.amount = event.params._amount
+  bid.timestamp = event.params.timestamp
+  bid.nftAuction = `${event.params._nft.toHexString()}-${event.params._tokenId.toString()}`
 
-    // Entity fields can be set using simple assignments
-    entity.count = BigInt.fromI32(0)
+  bid.save()
+
+  let auction = NFTAuction.load(`${event.params._nft.toHexString()}-${event.params._tokenId.toString()}`)
+  if(!auction) return
+
+  let bids = auction.bids
+
+  if(!bids) {
+    bids = [bid.id]
+
+    auction.bids = bids
+
+    auction.save()
+  } else {
+    bids.push(bid.id)
+
+    auction.bids = bids
+
+    auction.save()
   }
-
-  // BigInt and BigDecimal math are supported
-  entity.count = entity.count + BigInt.fromI32(1)
-
-  // Entity fields can be set based on event parameters
-  entity._nft = event.params._nft
-  entity._tokenId = event.params._tokenId
-
-  // Entities can be written to the store with `.save()`
-  entity.save()
-
-  // Note: If a handler doesn't require existing field values, it is faster
-  // _not_ to load the entity from the store. Instead, create it fresh with
-  // `new Entity(...)`, set the fields that should be updated and save the
-  // entity back to the store. Fields that were not set or unset remain
-  // unchanged, allowing for partial updates to be applied.
-
-  // It is also possible to access smart contracts from mappings. For
-  // example, the contract that has emitted the event can be connected to
-  // with:
-  //
-  // let contract = Contract.bind(event.address)
-  //
-  // The following functions can then be called on this contract to access
-  // state variables and other data:
-  //
-  // - contract.Naksh_org(...)
-  // - contract.auctionData(...)
-  // - contract.getBidHistory(...)
-  // - contract.getNFTonSale(...)
-  // - contract.getSaleData(...)
-  // - contract.getSalePrice(...)
-  // - contract.isTokenFirstSale(...)
-  // - contract.onERC721Received(...)
-  // - contract.owner(...)
-  // - contract.prevBidData(...)
-  // - contract.saleData(...)
-  // - contract.startAuction(...)
 }
 
-export function handleEndedAuction(event: EndedAuction): void {}
+export function handleEndedAuction(event: EndedAuction): void {
+  let entity = SaleData.load(`${event.params._nft.toHexString()}-${event.params._tokenId.toString()}`)
+  if(!entity) return
+
+  let nft = NFTData.load(entity.nft)
+  if(!nft) return
+
+  let soldEntity = new SoldNFT(`${event.params._nft.toHexString()}-${event.params._tokenId.toString()}`)
+  soldEntity.buyer = event.params._buyer
+  soldEntity.seller = nft.creator
+  soldEntity.price = event.params.highestBID
+  soldEntity.nft = nft.id
+  soldEntity.timestamp = event.params.timestamp
+
+  store.remove('SaleData', entity.id)
+  soldEntity.save()
+}
 
 export function handleOwnershipTransferred(event: OwnershipTransferred): void {}
 
-export function handleSalePriceSet(event: SalePriceSet): void {}
+export function handleSalePriceSet(event: SalePriceSet): void {
+  let entity = new SaleData(`${event.params._nft.toHexString()}-${event.params._tokenId.toString()}`)
 
-export function handleSold(event: Sold): void {}
+  entity.salePrice = event.params._price
+  entity.saleType = "0"
+  entity.tokenFirstSale = event.params.tokenFirstSale
+  entity.nft = `${event.params._nft.toHexString()}-${event.params._tokenId.toString()}`
+  entity.isOnSale = true
 
-export function handleStartedAuction(event: StartedAuction): void {}
+  entity.save()
+}
+
+export function handleSold(event: Sold): void {
+  let entity = SaleData.load(`${event.params._nft.toHexString()}-${event.params._tokenId.toString()}`)
+  if(!entity) return
+
+  let soldEntity = new SoldNFT(`${event.params._nft.toHexString()}-${event.params._tokenId.toString()}`)
+  soldEntity.buyer = event.params._buyer
+  soldEntity.seller = event.params._seller
+  soldEntity.price = entity.salePrice
+  soldEntity.nft = `${event.params._nft.toHexString()}-${event.params._tokenId.toString()}`
+  soldEntity.timestamp = event.params.timestamp
+
+  store.remove('SaleData', entity.id)
+  soldEntity.save()
+}
+
+export function handleStartedAuction(event: StartedAuction): void {
+  let auctionEntity = new NFTAuction(`${event.params._nft.toHexString()}-${event.params.tokenId.toString()}`)
+  auctionEntity.endTime = event.params.endTime
+  auctionEntity.startTime = event.params.startTime
+  auctionEntity.tokenId = event.params.tokenId
+  auctionEntity.nft = `${event.params._nft.toHexString()}-${event.params.tokenId.toString()}`
+  auctionEntity.owner = event.params.owner
+  auctionEntity.price = event.params.price
+
+  auctionEntity.save()
+  
+  let entity = new SaleData(`${event.params._nft.toHexString()}-${event.params.tokenId.toString()}`)
+
+  entity.salePrice = event.params.price
+  entity.saleType = "1"
+  entity.tokenFirstSale = false
+  entity.nft = `${event.params._nft.toHexString()}-${event.params.tokenId.toString()}`
+  entity.isOnSale = true
+  entity.auction = auctionEntity.id
+
+  entity.save()
+}

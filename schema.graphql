@@ -1,6 +1,68 @@
-type ExampleEntity @entity {
+type NFTData @entity {
   id: ID!
-  count: BigInt!
-  _nft: Bytes! # address
-  _tokenId: BigInt! # uint256
+  nftAddress: Bytes!
+  tokenId: BigInt!
+  tokenUri: String!
+  title: String!
+  description: String!
+  artistName: String
+  artistImg: String
+  creator: Bytes!
+  minter: BigInt
+  saleData: SaleData
+  auction: NFTAuction
+}
+
+type NFTAuction @entity {
+  id: ID!
+  startTime: BigInt!
+  endTime: BigInt!
+  tokenId: BigInt!
+  nft: NFTData!
+  owner: Bytes!
+  price: BigInt!
+  highestBid: BigInt
+  highestBidder: Bytes
+  bids: [BidHistory!]
+}
+
+type SaleData @entity {
+  id: ID!
+  nft: NFTData!
+  auction: NFTAuction
+  isOnSale: Boolean!
+  tokenFirstSale: Boolean!
+  salePrice: BigInt!
+  saleType: String!
+}
+
+type BidHistory @entity {
+  id: ID!
+  bidder: Bytes!
+  amount: BigInt!
+  timestamp: BigInt!
+  nftAuction: NFTAuction!
+}
+
+type Collection @entity {
+  id: ID!
+  name: String!
+  symbol: String!
+  nftAddress: Bytes!
+  creator: Bytes!
+  instagram: String
+  facebook: String
+  twitter: String
+  website: String
+  coverUri: String
+  isGradient: Boolean
+}
+
+type SoldNFT @entity {
+  id: ID!
+  buyer: Bytes!
+  seller: Bytes!
+  price: BigInt!
+  nft: NFTData!
+  timestamp: BigInt!
 }

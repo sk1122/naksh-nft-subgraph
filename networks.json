@@ -2,6 +2,9 @@
   "mumbai": {
     "NakshMarketplace": {
       "address": "0xa498DC2D425d74C6c63C9A5b9075b6d0ef2C279b"
+    },
+    "NakshFactory": {
+      "address": "0x613237e16EFCadAd62439A4ecA910bC36F4Da49a"
     }
   }
 }
