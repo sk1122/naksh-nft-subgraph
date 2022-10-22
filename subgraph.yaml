@@ -6,7 +6,7 @@ dataSources:
     name: NakshMarketplace
     network: mumbai
     source:
-      address: "0xa498DC2D425d74C6c63C9A5b9075b6d0ef2C279b"
+      address: "0xA1CF1146b690Cb7889742013e9CAd93b519255Cb"
       abi: NakshMarketplace
       startBlock: 28221561
     mapping:
@@ -57,6 +57,26 @@ dataSources:
         - event: CollectionCreated(address,string,string,address)
           handler: handleCollectionCreated
       file: ./src/naksh-factory.ts
+  - kind: ethereum
+    name: NakshNFT
+    network: mumbai
+    source:
+      address: "0x6327A7f5285BA2B58736b759b684786A17C05A30"
+      abi: NakshNFT
+      startBlock: 28221561
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ./src/mappings/naksh-nft.ts
+      entities:
+        - Mint
+      abis:
+        - name: NakshNFT
+          file: ./abis/NakshNFT.json
+      eventHandlers:
+        - event: Mint(address,uint256,string,string,string)
+          handler: handleMint
 templates:
   - name: NakshNFT
     kind: ethereum/contract
