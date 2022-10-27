@@ -130,6 +130,15 @@ export class NFTData extends Entity {
     this.set("creator", Value.fromBytes(value));
   }
 
+  get owner(): Bytes {
+    let value = this.get("owner");
+    return value!.toBytes();
+  }
+
+  set owner(value: Bytes) {
+    this.set("owner", Value.fromBytes(value));
+  }
+
   get minter(): BigInt | null {
     let value = this.get("minter");
     if (!value || value.kind == ValueKind.NULL) {
@@ -546,6 +555,32 @@ export class Collection extends Entity {
 
   set creator(value: Bytes) {
     this.set("creator", Value.fromBytes(value));
+  }
+
+  get royaltyPerc(): BigInt {
+    let value = this.get("royaltyPerc");
+    return value!.toBigInt();
+  }
+
+  set royaltyPerc(value: BigInt) {
+    this.set("royaltyPerc", Value.fromBigInt(value));
+  }
+
+  get logo(): string | null {
+    let value = this.get("logo");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set logo(value: string | null) {
+    if (!value) {
+      this.unset("logo");
+    } else {
+      this.set("logo", Value.fromString(<string>value));
+    }
   }
 
   get instagram(): string | null {

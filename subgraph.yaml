@@ -23,6 +23,8 @@ dataSources:
       abis:
         - name: NakshMarketplace
           file: ./abis/NakshMarketplace.json
+        - name: NakshNFT
+          file: ./abis/NakshNFT.json
       eventHandlers:
         - event: Bidding(address,uint256,address,uint256,uint256)
           handler: handleBidding
@@ -53,6 +55,8 @@ dataSources:
       abis:
         - name: NakshFactory
           file: ./abis/NakshFactory.json
+        - name: NakshNFT
+          file: ./abis/NakshNFT.json
       eventHandlers:
         - event: CollectionCreated(address,string,string,address)
           handler: handleCollectionCreated
@@ -96,4 +100,6 @@ templates:
       eventHandlers:
         - event: Mint(address,uint256,string,string,string)
           handler: handleMint
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
         

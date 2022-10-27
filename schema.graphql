@@ -8,6 +8,7 @@ type NFTData @entity {
   artistName: String
   artistImg: String
   creator: Bytes!
+  owner: Bytes!
   minter: BigInt
   saleData: SaleData
   auction: NFTAuction
@@ -50,6 +51,8 @@ type Collection @entity {
   symbol: String!
   nftAddress: Bytes!
   creator: Bytes!
+  royaltyPerc: BigInt!
+  logo: String
   instagram: String
   facebook: String
   twitter: String
