@@ -27,16 +27,24 @@ export class CollectionCreated__Params {
     return this._event.parameters[0].value.toAddress();
   }
 
-  get name(): string {
+  get artistName(): string {
     return this._event.parameters[1].value.toString();
   }
 
-  get symbol(): string {
+  get artistImg(): string {
     return this._event.parameters[2].value.toString();
   }
 
+  get collectionName(): string {
+    return this._event.parameters[3].value.toString();
+  }
+
+  get symbol(): string {
+    return this._event.parameters[4].value.toString();
+  }
+
   get nftAddress(): Address {
-    return this._event.parameters[3].value.toAddress();
+    return this._event.parameters[5].value.toAddress();
   }
 }
 

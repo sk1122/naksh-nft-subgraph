@@ -35,6 +35,7 @@ type SaleData @entity {
   tokenFirstSale: Boolean!
   salePrice: BigInt!
   saleType: String!
+  timestamp: BigInt!
 }
 
 type BidHistory @entity {
@@ -52,6 +53,7 @@ type Collection @entity {
   nftAddress: Bytes!
   creator: Bytes!
   royaltyPerc: BigInt!
+  description: String
   logo: String
   instagram: String
   facebook: String
@@ -59,6 +61,8 @@ type Collection @entity {
   website: String
   coverUri: String
   isGradient: Boolean
+  artistName: String
+  artistImg: String
 }
 
 type SoldNFT @entity {

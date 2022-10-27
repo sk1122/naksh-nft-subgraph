@@ -12,6 +12,8 @@ export function handleMint(event: Mint): void {
     nft.artistName = event.params.creator.toHexString()
     nft.creator = event.params.creator
     nft.owner = event.params.creator
+    nft.artistName = event.params.artistName
+    nft.artistImg = event.params.artistImg
 
     nft.save()
 }

@@ -112,6 +112,14 @@ export class Mint__Params {
   get description(): string {
     return this._event.parameters[4].value.toString();
   }
+
+  get artistName(): string {
+    return this._event.parameters[5].value.toString();
+  }
+
+  get artistImg(): string {
+    return this._event.parameters[6].value.toString();
+  }
 }
 
 export class OwnershipGranted extends ethereum.Event {
@@ -494,67 +502,22 @@ export class NakshNFT extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
-  bulkMintByAdmin(
-    _creator: Address,
-    _tokenURI: Array<string>,
-    title: Array<string>,
-    description: Array<string>,
-    artistName: string
-  ): Array<BigInt> {
-    let result = super.call(
-      "bulkMintByAdmin",
-      "bulkMintByAdmin(address,string[],string[],string[],string):(uint256[])",
-      [
-        ethereum.Value.fromAddress(_creator),
-        ethereum.Value.fromStringArray(_tokenURI),
-        ethereum.Value.fromStringArray(title),
-        ethereum.Value.fromStringArray(description),
-        ethereum.Value.fromString(artistName)
-      ]
-    );
-
-    return result[0].toBigIntArray();
-  }
-
-  try_bulkMintByAdmin(
-    _creator: Address,
-    _tokenURI: Array<string>,
-    title: Array<string>,
-    description: Array<string>,
-    artistName: string
-  ): ethereum.CallResult<Array<BigInt>> {
-    let result = super.tryCall(
-      "bulkMintByAdmin",
-      "bulkMintByAdmin(address,string[],string[],string[],string):(uint256[])",
-      [
-        ethereum.Value.fromAddress(_creator),
-        ethereum.Value.fromStringArray(_tokenURI),
-        ethereum.Value.fromStringArray(title),
-        ethereum.Value.fromStringArray(description),
-        ethereum.Value.fromString(artistName)
-      ]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigIntArray());
-  }
-
   bulkMintByArtist(
     _tokenURI: Array<string>,
     title: Array<string>,
     description: Array<string>,
-    artistName: string
+    artistName: string,
+    artistImg: string
   ): Array<BigInt> {
     let result = super.call(
       "bulkMintByArtist",
-      "bulkMintByArtist(string[],string[],string[],string):(uint256[])",
+      "bulkMintByArtist(string[],string[],string[],string,string):(uint256[])",
       [
         ethereum.Value.fromStringArray(_tokenURI),
         ethereum.Value.fromStringArray(title),
         ethereum.Value.fromStringArray(description),
-        ethereum.Value.fromString(artistName)
+        ethereum.Value.fromString(artistName),
+        ethereum.Value.fromString(artistImg)
       ]
     );
 
@@ -565,16 +528,18 @@ export class NakshNFT extends ethereum.SmartContract {
     _tokenURI: Array<string>,
     title: Array<string>,
     description: Array<string>,
-    artistName: string
+    artistName: string,
+    artistImg: string
   ): ethereum.CallResult<Array<BigInt>> {
     let result = super.tryCall(
       "bulkMintByArtist",
-      "bulkMintByArtist(string[],string[],string[],string):(uint256[])",
+      "bulkMintByArtist(string[],string[],string[],string,string):(uint256[])",
       [
         ethereum.Value.fromStringArray(_tokenURI),
         ethereum.Value.fromStringArray(title),
         ethereum.Value.fromStringArray(description),
-        ethereum.Value.fromString(artistName)
+        ethereum.Value.fromString(artistName),
+        ethereum.Value.fromString(artistImg)
       ]
     );
     if (result.reverted) {
@@ -882,17 +847,19 @@ export class NakshNFT extends ethereum.SmartContract {
     _tokenURI: string,
     title: string,
     description: string,
-    artistName: string
+    artistName: string,
+    artistImg: string
   ): BigInt {
     let result = super.call(
       "mintByArtistOrAdmin",
-      "mintByArtistOrAdmin(address,string,string,string,string):(uint256)",
+      "mintByArtistOrAdmin(address,string,string,string,string,string):(uint256)",
       [
         ethereum.Value.fromAddress(_creator),
         ethereum.Value.fromString(_tokenURI),
         ethereum.Value.fromString(title),
         ethereum.Value.fromString(description),
-        ethereum.Value.fromString(artistName)
+        ethereum.Value.fromString(artistName),
+        ethereum.Value.fromString(artistImg)
       ]
     );
 
@@ -904,17 +871,19 @@ export class NakshNFT extends ethereum.SmartContract {
     _tokenURI: string,
     title: string,
     description: string,
-    artistName: string
+    artistName: string,
+    artistImg: string
   ): ethereum.CallResult<BigInt> {
     let result = super.tryCall(
       "mintByArtistOrAdmin",
-      "mintByArtistOrAdmin(address,string,string,string,string):(uint256)",
+      "mintByArtistOrAdmin(address,string,string,string,string,string):(uint256)",
       [
         ethereum.Value.fromAddress(_creator),
         ethereum.Value.fromString(_tokenURI),
         ethereum.Value.fromString(title),
         ethereum.Value.fromString(description),
-        ethereum.Value.fromString(artistName)
+        ethereum.Value.fromString(artistName),
+        ethereum.Value.fromString(artistImg)
       ]
     );
     if (result.reverted) {
@@ -1377,56 +1346,6 @@ export class ApproveCall__Outputs {
   }
 }
 
-export class BulkMintByAdminCall extends ethereum.Call {
-  get inputs(): BulkMintByAdminCall__Inputs {
-    return new BulkMintByAdminCall__Inputs(this);
-  }
-
-  get outputs(): BulkMintByAdminCall__Outputs {
-    return new BulkMintByAdminCall__Outputs(this);
-  }
-}
-
-export class BulkMintByAdminCall__Inputs {
-  _call: BulkMintByAdminCall;
-
-  constructor(call: BulkMintByAdminCall) {
-    this._call = call;
-  }
-
-  get _creator(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-
-  get _tokenURI(): Array<string> {
-    return this._call.inputValues[1].value.toStringArray();
-  }
-
-  get title(): Array<string> {
-    return this._call.inputValues[2].value.toStringArray();
-  }
-
-  get description(): Array<string> {
-    return this._call.inputValues[3].value.toStringArray();
-  }
-
-  get artistName(): string {
-    return this._call.inputValues[4].value.toString();
-  }
-}
-
-export class BulkMintByAdminCall__Outputs {
-  _call: BulkMintByAdminCall;
-
-  constructor(call: BulkMintByAdminCall) {
-    this._call = call;
-  }
-
-  get _tokenId(): Array<BigInt> {
-    return this._call.outputValues[0].value.toBigIntArray();
-  }
-}
-
 export class BulkMintByArtistCall extends ethereum.Call {
   get inputs(): BulkMintByArtistCall__Inputs {
     return new BulkMintByArtistCall__Inputs(this);
@@ -1458,6 +1377,10 @@ export class BulkMintByArtistCall__Inputs {
 
   get artistName(): string {
     return this._call.inputValues[3].value.toString();
+  }
+
+  get artistImg(): string {
+    return this._call.inputValues[4].value.toString();
   }
 }
 
@@ -1624,6 +1547,10 @@ export class MintByArtistOrAdminCall__Inputs {
 
   get artistName(): string {
     return this._call.inputValues[4].value.toString();
+  }
+
+  get artistImg(): string {
+    return this._call.inputValues[5].value.toString();
   }
 }
 

@@ -15,13 +15,17 @@ export function handleCollectionCreated(event: CollectionCreatedEvent): void {
     event.params.nftAddress.toHexString()
   )
   entity.creator = event.params.creator
-  entity.name = event.params.name
+  entity.name = collectionDetails.name
   entity.symbol = event.params.symbol
   entity.nftAddress = event.params.nftAddress
   entity.logo = collectionDetails.logo
   entity.coverUri = collectionDetails.cover[0].toString()
   entity.isGradient = collectionDetails.cover[1].toBoolean()
   entity.royaltyPerc = royalties.value1
+  entity.description = collectionDetails.about
+  entity.artistName = event.params.artistName
+  entity.artistImg = event.params.artistImg
+  
 
   entity.save()
 

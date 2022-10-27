@@ -420,6 +420,15 @@ export class SaleData extends Entity {
   set saleType(value: string) {
     this.set("saleType", Value.fromString(value));
   }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value!.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
+  }
 }
 
 export class BidHistory extends Entity {
@@ -566,6 +575,23 @@ export class Collection extends Entity {
     this.set("royaltyPerc", Value.fromBigInt(value));
   }
 
+  get description(): string | null {
+    let value = this.get("description");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set description(value: string | null) {
+    if (!value) {
+      this.unset("description");
+    } else {
+      this.set("description", Value.fromString(<string>value));
+    }
+  }
+
   get logo(): string | null {
     let value = this.get("logo");
     if (!value || value.kind == ValueKind.NULL) {
@@ -675,6 +701,40 @@ export class Collection extends Entity {
 
   set isGradient(value: boolean) {
     this.set("isGradient", Value.fromBoolean(value));
+  }
+
+  get artistName(): string | null {
+    let value = this.get("artistName");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set artistName(value: string | null) {
+    if (!value) {
+      this.unset("artistName");
+    } else {
+      this.set("artistName", Value.fromString(<string>value));
+    }
+  }
+
+  get artistImg(): string | null {
+    let value = this.get("artistImg");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set artistImg(value: string | null) {
+    if (!value) {
+      this.unset("artistImg");
+    } else {
+      this.set("artistImg", Value.fromString(<string>value));
+    }
   }
 }
 

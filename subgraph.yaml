@@ -6,7 +6,7 @@ dataSources:
     name: NakshMarketplace
     network: mumbai
     source:
-      address: "0xA1CF1146b690Cb7889742013e9CAd93b519255Cb"
+      address: "0xce827749f2438767019Aa1802621Eb65b3d5DCf1"
       abi: NakshMarketplace
       startBlock: 28221561
     mapping:
@@ -32,18 +32,18 @@ dataSources:
           handler: handleEndedAuction
         - event: OwnershipTransferred(indexed address,indexed address)
           handler: handleOwnershipTransferred
-        - event: SalePriceSet(address,uint256,uint256,bool,uint8)
+        - event: SalePriceSet(address,uint256,uint256,uint256,bool,uint8)
           handler: handleSalePriceSet
         - event: Sold(address,address,address,uint256,uint256,uint256)
           handler: handleSold
-        - event: StartedAuction(address,uint256,uint256,uint256,address,uint256)
+        - event: StartedAuction(address,uint256,uint256,uint256,uint256,address,uint256)
           handler: handleStartedAuction
       file: ./src/naksh-marketplace.ts
   - kind: ethereum
     name: NakshFactory
     network: mumbai
     source:
-      address: "0x613237e16EFCadAd62439A4ecA910bC36F4Da49a"
+      address: "0x1e414FDe1b9F38a5b7Ff434B48F0Bf3c56ABdAAf"
       abi: NakshFactory
       startBlock: 28221561
     mapping:
@@ -58,14 +58,14 @@ dataSources:
         - name: NakshNFT
           file: ./abis/NakshNFT.json
       eventHandlers:
-        - event: CollectionCreated(address,string,string,address)
+        - event: CollectionCreated(address,string,string,string,string,address)
           handler: handleCollectionCreated
       file: ./src/naksh-factory.ts
   - kind: ethereum
     name: NakshNFT
     network: mumbai
     source:
-      address: "0x6327A7f5285BA2B58736b759b684786A17C05A30"
+      address: "0xA7F4AD36bD0eF14A21D8f50279323356f12c2e56"
       abi: NakshNFT
       startBlock: 28221561
     mapping:
@@ -79,8 +79,10 @@ dataSources:
         - name: NakshNFT
           file: ./abis/NakshNFT.json
       eventHandlers:
-        - event: Mint(address,uint256,string,string,string)
+        - event: Mint(address,uint256,string,string,string,string,string)
           handler: handleMint
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
 templates:
   - name: NakshNFT
     kind: ethereum/contract
@@ -98,7 +100,7 @@ templates:
         - name: NakshNFT
           file: ./abis/NakshNFT.json
       eventHandlers:
-        - event: Mint(address,uint256,string,string,string)
+        - event: Mint(address,uint256,string,string,string,string,string)
           handler: handleMint
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransfer

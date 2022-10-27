@@ -125,12 +125,16 @@ export class SalePriceSet__Params {
     return this._event.parameters[2].value.toBigInt();
   }
 
+  get currentTimestamp(): BigInt {
+    return this._event.parameters[3].value.toBigInt();
+  }
+
   get tokenFirstSale(): boolean {
-    return this._event.parameters[3].value.toBoolean();
+    return this._event.parameters[4].value.toBoolean();
   }
 
   get saletype(): i32 {
-    return this._event.parameters[4].value.toI32();
+    return this._event.parameters[5].value.toI32();
   }
 }
 
@@ -189,24 +193,28 @@ export class StartedAuction__Params {
     return this._event.parameters[0].value.toAddress();
   }
 
-  get startTime(): BigInt {
+  get currentTimestamp(): BigInt {
     return this._event.parameters[1].value.toBigInt();
   }
 
-  get endTime(): BigInt {
+  get startTime(): BigInt {
     return this._event.parameters[2].value.toBigInt();
   }
 
-  get tokenId(): BigInt {
+  get endTime(): BigInt {
     return this._event.parameters[3].value.toBigInt();
   }
 
+  get tokenId(): BigInt {
+    return this._event.parameters[4].value.toBigInt();
+  }
+
   get owner(): Address {
-    return this._event.parameters[4].value.toAddress();
+    return this._event.parameters[5].value.toAddress();
   }
 
   get price(): BigInt {
-    return this._event.parameters[5].value.toBigInt();
+    return this._event.parameters[6].value.toBigInt();
   }
 }
 
