@@ -1,4 +1,5 @@
 import { BigInt, store } from "@graphprotocol/graph-ts"
+import { Cancelled } from "../generated/NakshMarketplace/NakshMarketplace"
 import {
   NakshMarketplace,
   Bidding,
@@ -141,4 +142,11 @@ export function handleStartedAuction(event: StartedAuction): void {
   nftEntity.auction = auctionEntity.id
 
   nftEntity.save()
+}
+
+export function handleCancel(event: Cancelled): void {
+  let entity = SaleData.load(`${event.params._nft.toHexString()}-${event.params._tokenId.toString()}`)
+  if(!entity) return
+
+  store.remove('SaleData', entity.id)
 }

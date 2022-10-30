@@ -41,7 +41,7 @@ export function handleTransferSingle(event: TransferSingle): void {
 
     if(!nft) return
 
-    if(event.params.to != Address.fromHexString("0x8e648dAd331dc0C1EE2cd980EAeEC88B97A8A738")) {
+    if(event.params.to != Address.fromHexString("0xa8562C4977e065De8f989FE74493861f1C3F9b34")) {
         const newNft = NFTData.load(`${event.params.to.toHexString()}-${event.address.toHexString()}-${event.params.id.toString()}`)
 
         if(newNft) {

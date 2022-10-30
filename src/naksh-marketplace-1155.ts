@@ -1,5 +1,5 @@
 import { BigInt, store } from "@graphprotocol/graph-ts";
-import { SalePriceSet, Sold } from "../generated/Naksh1155Marketplace/Naksh1155Marketplace";
+import { Cancelled, SalePriceSet, Sold } from "../generated/Naksh1155Marketplace/Naksh1155Marketplace";
 import { NFTData, SaleData, SoldNFT } from "../generated/schema";
 
 export function handleSalePriceSet(event: SalePriceSet): void {
@@ -77,5 +77,18 @@ export function handleSold(event: Sold): void {
   }
 
   soldEntity.save()
+}
 
+export function handleCancel(event: Cancelled): void {
+  let entity = SaleData.load(`${event.params._seller.toHexString()}-${event.params._nft.toHexString()}-${event.params._tokenId.toString()}`)
+  if(!entity) return
+
+  let nftEntity = NFTData.load(`${event.params._seller.toHexString()}-${event.params._nft.toHexString()}-${event.params._tokenId.toString()}`)
+  if(!nftEntity) return
+
+  nftEntity.quantity = nftEntity.quantity.plus(entity.quantity)
+
+  nftEntity.save()
+
+  store.remove('SaleData', entity.id)
 }

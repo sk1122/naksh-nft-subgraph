@@ -10,6 +10,32 @@ import {
   BigInt
 } from "@graphprotocol/graph-ts";
 
+export class Cancelled extends ethereum.Event {
+  get params(): Cancelled__Params {
+    return new Cancelled__Params(this);
+  }
+}
+
+export class Cancelled__Params {
+  _event: Cancelled;
+
+  constructor(event: Cancelled) {
+    this._event = event;
+  }
+
+  get _nft(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get _tokenId(): BigInt {
+    return this._event.parameters[1].value.toBigInt();
+  }
+
+  get _seller(): Address {
+    return this._event.parameters[2].value.toAddress();
+  }
+}
+
 export class OwnershipTransferred extends ethereum.Event {
   get params(): OwnershipTransferred__Params {
     return new OwnershipTransferred__Params(this);
@@ -908,12 +934,8 @@ export class ChangePriceCall__Inputs {
     return this._call.inputValues[1].value.toBigInt();
   }
 
-  get _ownerAddr(): Address {
-    return this._call.inputValues[2].value.toAddress();
-  }
-
   get price(): BigInt {
-    return this._call.inputValues[3].value.toBigInt();
+    return this._call.inputValues[2].value.toBigInt();
   }
 }
 

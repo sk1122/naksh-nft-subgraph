@@ -26,7 +26,7 @@ export function handleTransfer(event: Transfer): void {
 
     if(!nft) return
 
-    if(event.params.to != Address.fromHexString("0xce827749f2438767019Aa1802621Eb65b3d5DCf1")) {
+    if(event.params.to != Address.fromHexString("0x9D03DF8e0F7898421D9A8C26e44cb4EB67cD9334")) {
         nft.owner = event.params.to
     
         nft.save()

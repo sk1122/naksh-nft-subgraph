@@ -44,6 +44,32 @@ export class Bidding__Params {
   }
 }
 
+export class Cancelled extends ethereum.Event {
+  get params(): Cancelled__Params {
+    return new Cancelled__Params(this);
+  }
+}
+
+export class Cancelled__Params {
+  _event: Cancelled;
+
+  constructor(event: Cancelled) {
+    this._event = event;
+  }
+
+  get _nft(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get _tokenId(): BigInt {
+    return this._event.parameters[1].value.toBigInt();
+  }
+
+  get _seller(): Address {
+    return this._event.parameters[2].value.toAddress();
+  }
+}
+
 export class EndedAuction extends ethereum.Event {
   get params(): EndedAuction__Params {
     return new EndedAuction__Params(this);
@@ -307,20 +333,24 @@ export class NakshMarketplace__getNFTonSaleResultValue0Struct extends ethereum.T
     );
   }
 
-  get isOnSale(): boolean {
-    return this[1].toBoolean();
+  get owner(): Address {
+    return this[1].toAddress();
   }
 
-  get tokenFirstSale(): boolean {
+  get isOnSale(): boolean {
     return this[2].toBoolean();
   }
 
+  get tokenFirstSale(): boolean {
+    return this[3].toBoolean();
+  }
+
   get salePrice(): BigInt {
-    return this[3].toBigInt();
+    return this[4].toBigInt();
   }
 
   get saletype(): i32 {
-    return this[4].toI32();
+    return this[5].toI32();
   }
 }
 
@@ -377,20 +407,24 @@ export class NakshMarketplace__getSaleDataResultValue0Struct extends ethereum.Tu
     );
   }
 
-  get isOnSale(): boolean {
-    return this[1].toBoolean();
+  get owner(): Address {
+    return this[1].toAddress();
   }
 
-  get tokenFirstSale(): boolean {
+  get isOnSale(): boolean {
     return this[2].toBoolean();
   }
 
+  get tokenFirstSale(): boolean {
+    return this[3].toBoolean();
+  }
+
   get salePrice(): BigInt {
-    return this[3].toBigInt();
+    return this[4].toBigInt();
   }
 
   get saletype(): i32 {
-    return this[4].toI32();
+    return this[5].toI32();
   }
 }
 
@@ -469,107 +503,6 @@ export class NakshMarketplace__prevBidDataResult {
 
   getTimestamp(): BigInt {
     return this.value2;
-  }
-}
-
-export class NakshMarketplace__saleDataResultNftStruct extends ethereum.Tuple {
-  get nftAddress(): Address {
-    return this[0].toAddress();
-  }
-
-  get tokenId(): BigInt {
-    return this[1].toBigInt();
-  }
-
-  get tokenUri(): string {
-    return this[2].toString();
-  }
-
-  get title(): string {
-    return this[3].toString();
-  }
-
-  get description(): string {
-    return this[4].toString();
-  }
-
-  get artist(): NakshMarketplace__saleDataResultNftArtistStruct {
-    return changetype<NakshMarketplace__saleDataResultNftArtistStruct>(
-      this[5].toTuple()
-    );
-  }
-
-  get mintedBy(): i32 {
-    return this[6].toI32();
-  }
-}
-
-export class NakshMarketplace__saleDataResultNftArtistStruct extends ethereum.Tuple {
-  get name(): string {
-    return this[0].toString();
-  }
-
-  get artistAddress(): Address {
-    return this[1].toAddress();
-  }
-
-  get imageUrl(): string {
-    return this[2].toString();
-  }
-}
-
-export class NakshMarketplace__saleDataResult {
-  value0: NakshMarketplace__saleDataResultNftStruct;
-  value1: boolean;
-  value2: boolean;
-  value3: BigInt;
-  value4: i32;
-
-  constructor(
-    value0: NakshMarketplace__saleDataResultNftStruct,
-    value1: boolean,
-    value2: boolean,
-    value3: BigInt,
-    value4: i32
-  ) {
-    this.value0 = value0;
-    this.value1 = value1;
-    this.value2 = value2;
-    this.value3 = value3;
-    this.value4 = value4;
-  }
-
-  toMap(): TypedMap<string, ethereum.Value> {
-    let map = new TypedMap<string, ethereum.Value>();
-    map.set("value0", ethereum.Value.fromTuple(this.value0));
-    map.set("value1", ethereum.Value.fromBoolean(this.value1));
-    map.set("value2", ethereum.Value.fromBoolean(this.value2));
-    map.set("value3", ethereum.Value.fromUnsignedBigInt(this.value3));
-    map.set(
-      "value4",
-      ethereum.Value.fromUnsignedBigInt(BigInt.fromI32(this.value4))
-    );
-    return map;
-  }
-
-  getNft(): NakshMarketplace__saleDataResultNftStruct {
-    return this.value0;
-  }
-
-  getIsOnSale(): boolean {
-    return this.value1;
-  }
-
-  getTokenFirstSale(): boolean {
-    return this.value2;
-  }
-
-  getSalePrice(): BigInt {
-    return this.value3;
-  }
-
-  getSaletype(): i32 {
-    return this.value4;
   }
 }
 
@@ -690,7 +623,7 @@ export class NakshMarketplace extends ethereum.SmartContract {
   getNFTonSale(): Array<NakshMarketplace__getNFTonSaleResultValue0Struct> {
     let result = super.call(
       "getNFTonSale",
-      "getNFTonSale():(((address,uint256,string,string,string,(string,address,string),uint8),bool,bool,uint256,uint8)[])",
+      "getNFTonSale():(((address,uint256,string,string,string,(string,address,string),uint8),address,bool,bool,uint256,uint8)[])",
       []
     );
 
@@ -704,7 +637,7 @@ export class NakshMarketplace extends ethereum.SmartContract {
   > {
     let result = super.tryCall(
       "getNFTonSale",
-      "getNFTonSale():(((address,uint256,string,string,string,(string,address,string),uint8),bool,bool,uint256,uint8)[])",
+      "getNFTonSale():(((address,uint256,string,string,string,(string,address,string),uint8),address,bool,bool,uint256,uint8)[])",
       []
     );
     if (result.reverted) {
@@ -722,7 +655,7 @@ export class NakshMarketplace extends ethereum.SmartContract {
   ): NakshMarketplace__getSaleDataResultValue0Struct {
     let result = super.call(
       "getSaleData",
-      "getSaleData(address,uint256):(((address,uint256,string,string,string,(string,address,string),uint8),bool,bool,uint256,uint8))",
+      "getSaleData(address,uint256):(((address,uint256,string,string,string,(string,address,string),uint8),address,bool,bool,uint256,uint8))",
       [
         ethereum.Value.fromAddress(_nft),
         ethereum.Value.fromUnsignedBigInt(_tokenId)
@@ -740,7 +673,7 @@ export class NakshMarketplace extends ethereum.SmartContract {
   ): ethereum.CallResult<NakshMarketplace__getSaleDataResultValue0Struct> {
     let result = super.tryCall(
       "getSaleData",
-      "getSaleData(address,uint256):(((address,uint256,string,string,string,(string,address,string),uint8),bool,bool,uint256,uint8))",
+      "getSaleData(address,uint256):(((address,uint256,string,string,string,(string,address,string),uint8),address,bool,bool,uint256,uint8))",
       [
         ethereum.Value.fromAddress(_nft),
         ethereum.Value.fromUnsignedBigInt(_tokenId)
@@ -924,60 +857,6 @@ export class NakshMarketplace extends ethereum.SmartContract {
         value[0].toAddress(),
         value[1].toBigInt(),
         value[2].toBigInt()
-      )
-    );
-  }
-
-  saleData(param0: Address, param1: BigInt): NakshMarketplace__saleDataResult {
-    let result = super.call(
-      "saleData",
-      "saleData(address,uint256):((address,uint256,string,string,string,(string,address,string),uint8),bool,bool,uint256,uint8)",
-      [
-        ethereum.Value.fromAddress(param0),
-        ethereum.Value.fromUnsignedBigInt(param1)
-      ]
-    );
-
-    return changetype<NakshMarketplace__saleDataResult>(
-      new NakshMarketplace__saleDataResult(
-        changetype<NakshMarketplace__saleDataResultNftStruct>(
-          result[0].toTuple()
-        ),
-        result[1].toBoolean(),
-        result[2].toBoolean(),
-        result[3].toBigInt(),
-        result[4].toI32()
-      )
-    );
-  }
-
-  try_saleData(
-    param0: Address,
-    param1: BigInt
-  ): ethereum.CallResult<NakshMarketplace__saleDataResult> {
-    let result = super.tryCall(
-      "saleData",
-      "saleData(address,uint256):((address,uint256,string,string,string,(string,address,string),uint8),bool,bool,uint256,uint8)",
-      [
-        ethereum.Value.fromAddress(param0),
-        ethereum.Value.fromUnsignedBigInt(param1)
-      ]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(
-      changetype<NakshMarketplace__saleDataResult>(
-        new NakshMarketplace__saleDataResult(
-          changetype<NakshMarketplace__saleDataResultNftStruct>(
-            value[0].toTuple()
-          ),
-          value[1].toBoolean(),
-          value[2].toBoolean(),
-          value[3].toBigInt(),
-          value[4].toI32()
-        )
       )
     );
   }
