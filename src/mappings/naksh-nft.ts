@@ -1,3 +1,4 @@
+import { Address, BigInt } from "@graphprotocol/graph-ts"
 import { NFTData } from "../../generated/schema"
 import { Mint, Transfer } from "../../generated/templates/NakshNFT/NakshNFT"
 
@@ -14,6 +15,8 @@ export function handleMint(event: Mint): void {
     nft.owner = event.params.creator
     nft.artistName = event.params.artistName
     nft.artistImg = event.params.artistImg
+    nft.quantity = BigInt.fromI32(1)
+    nft.erc721 = true
 
     nft.save()
 }
@@ -23,7 +26,9 @@ export function handleTransfer(event: Transfer): void {
 
     if(!nft) return
 
-    nft.owner = event.params.to
-
-    nft.save()
+    if(event.params.to != Address.fromHexString("0xce827749f2438767019Aa1802621Eb65b3d5DCf1")) {
+        nft.owner = event.params.to
+    
+        nft.save()
+    }
 }

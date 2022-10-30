@@ -1,7 +1,7 @@
-import { CollectionCreated as CollectionCreatedEvent } from "../generated/NakshFactory/NakshFactory"
+import { CollectionCreated as CollectionCreatedEvent } from "../generated/Naksh1155Factory/Naksh1155Factory"
 import { Collection } from "../generated/schema"
-import { NakshNFT } from "../generated/templates"
-import { NakshNFT as NakshContract } from "../generated/templates/NakshNFT/NakshNFT"
+import { Naksh1155NFT } from "../generated/templates"
+import { Naksh1155NFT as NakshContract } from "../generated/templates/Naksh1155NFT/Naksh1155NFT"
 
 export function handleCollectionCreated(event: CollectionCreatedEvent): void {
   let nakshNft = NakshContract.bind(event.params.nftAddress)
@@ -29,9 +29,9 @@ export function handleCollectionCreated(event: CollectionCreatedEvent): void {
   entity.facebook = collectionDetails.social.facebook
   entity.instagram = collectionDetails.social.instagram
   entity.website = collectionDetails.social.website
-  entity.erc721 = true
+  entity.erc721 = false
 
   entity.save()
 
-  NakshNFT.create(event.params.nftAddress)
+  Naksh1155NFT.create(event.params.nftAddress)
 }

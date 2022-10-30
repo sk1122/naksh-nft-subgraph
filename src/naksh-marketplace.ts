@@ -53,6 +53,7 @@ export function handleEndedAuction(event: EndedAuction): void {
   soldEntity.price = event.params.highestBID
   soldEntity.nft = nft.id
   soldEntity.timestamp = event.params.timestamp
+  soldEntity.quantity = BigInt.fromI32(1)
 
   store.remove('SaleData', entity.id)
   soldEntity.save()
@@ -69,6 +70,7 @@ export function handleSalePriceSet(event: SalePriceSet): void {
   entity.nft = `${event.params._nft.toHexString()}-${event.params._tokenId.toString()}`
   entity.isOnSale = true
   entity.timestamp = event.params.currentTimestamp
+  entity.quantity = BigInt.fromI32(1)
 
   let nftEntity = NFTData.load(`${event.params._nft.toHexString()}-${event.params._tokenId.toString()}`)
 
@@ -91,6 +93,7 @@ export function handleSold(event: Sold): void {
   soldEntity.price = entity.salePrice
   soldEntity.nft = `${event.params._nft.toHexString()}-${event.params._tokenId.toString()}`
   soldEntity.timestamp = event.params.timestamp
+  soldEntity.quantity = BigInt.fromI32(1)
 
   store.remove('SaleData', entity.id)
   soldEntity.save()
@@ -113,6 +116,7 @@ export function handleStartedAuction(event: StartedAuction): void {
   auctionEntity.nft = `${event.params._nft.toHexString()}-${event.params.tokenId.toString()}`
   auctionEntity.owner = event.params.owner
   auctionEntity.price = event.params.price
+  auctionEntity.quantity = BigInt.fromI32(1)
 
   auctionEntity.save()
   
@@ -125,6 +129,7 @@ export function handleStartedAuction(event: StartedAuction): void {
   entity.isOnSale = true
   entity.auction = auctionEntity.id
   entity.timestamp = event.params.currentTimestamp
+  entity.quantity = BigInt.fromI32(1)
 
   entity.save()
 

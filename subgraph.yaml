@@ -83,6 +83,58 @@ dataSources:
           handler: handleMint
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransfer
+
+  - kind: ethereum
+    name: Naksh1155Marketplace
+    network: mumbai
+    source:
+      address: "0x8e648dAd331dc0C1EE2cd980EAeEC88B97A8A738"
+      abi: Naksh1155Marketplace
+      startBlock: 28221561
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - Bidding
+        - EndedAuction
+        - OwnershipTransferred
+        - SalePriceSet
+        - Sold
+        - StartedAuction
+      abis:
+        - name: Naksh1155Marketplace
+          file: ./abis/Naksh1155Marketplace.json
+        - name: Naksh1155NFT
+          file: ./abis/Naksh1155NFT.json
+      eventHandlers:
+        - event: SalePriceSet(address,address,uint256,uint256,uint256,uint256,bool,uint8)
+          handler: handleSalePriceSet
+        - event: Sold(address,address,address,uint256,uint256,uint256,uint256)
+          handler: handleSold
+      file: ./src/naksh-marketplace-1155.ts
+  - kind: ethereum
+    name: Naksh1155Factory
+    network: mumbai
+    source:
+      address: "0x01E778EC8732796538CCFE519A63bdA3Df729b2A"
+      abi: Naksh1155Factory
+      startBlock: 28221561
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - CollectionCreated
+      abis:
+        - name: Naksh1155Factory
+          file: ./abis/Naksh1155Factory.json
+        - name: Naksh1155NFT
+          file: ./abis/Naksh1155NFT.json
+      eventHandlers:
+        - event: CollectionCreated(address,string,string,string,string,address)
+          handler: handleCollectionCreated
+      file: ./src/naksh-factory-1155.ts
 templates:
   - name: NakshNFT
     kind: ethereum/contract
@@ -104,4 +156,25 @@ templates:
           handler: handleMint
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransfer
+
+  - name: Naksh1155NFT
+    kind: ethereum/contract
+    network: mumbai
+    source:
+      abi: Naksh1155NFT
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ./src/mappings/naksh-nft-1155.ts
+      entities:
+        - Mint
+      abis:
+        - name: Naksh1155NFT
+          file: ./abis/Naksh1155NFT.json
+      eventHandlers:
+        - event: Mint(address,uint256,uint256,string,string,string,string,string)
+          handler: handleMint
+        - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleTransferSingle
         

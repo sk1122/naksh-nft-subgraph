@@ -78,6 +78,15 @@ export class NFTData extends Entity {
     this.set("title", Value.fromString(value));
   }
 
+  get quantity(): BigInt {
+    let value = this.get("quantity");
+    return value!.toBigInt();
+  }
+
+  set quantity(value: BigInt) {
+    this.set("quantity", Value.fromBigInt(value));
+  }
+
   get description(): string {
     let value = this.get("description");
     return value!.toString();
@@ -189,6 +198,15 @@ export class NFTData extends Entity {
       this.set("auction", Value.fromString(<string>value));
     }
   }
+
+  get erc721(): boolean {
+    let value = this.get("erc721");
+    return value!.toBoolean();
+  }
+
+  set erc721(value: boolean) {
+    this.set("erc721", Value.fromBoolean(value));
+  }
 }
 
 export class NFTAuction extends Entity {
@@ -247,6 +265,15 @@ export class NFTAuction extends Entity {
 
   set tokenId(value: BigInt) {
     this.set("tokenId", Value.fromBigInt(value));
+  }
+
+  get quantity(): BigInt {
+    let value = this.get("quantity");
+    return value!.toBigInt();
+  }
+
+  set quantity(value: BigInt) {
+    this.set("quantity", Value.fromBigInt(value));
   }
 
   get nft(): string {
@@ -366,6 +393,15 @@ export class SaleData extends Entity {
 
   set nft(value: string) {
     this.set("nft", Value.fromString(value));
+  }
+
+  get quantity(): BigInt {
+    let value = this.get("quantity");
+    return value!.toBigInt();
+  }
+
+  set quantity(value: BigInt) {
+    this.set("quantity", Value.fromBigInt(value));
   }
 
   get auction(): string | null {
@@ -573,6 +609,15 @@ export class Collection extends Entity {
 
   set royaltyPerc(value: BigInt) {
     this.set("royaltyPerc", Value.fromBigInt(value));
+  }
+
+  get erc721(): boolean {
+    let value = this.get("erc721");
+    return value!.toBoolean();
+  }
+
+  set erc721(value: boolean) {
+    this.set("erc721", Value.fromBoolean(value));
   }
 
   get description(): string | null {
@@ -785,6 +830,15 @@ export class SoldNFT extends Entity {
 
   set seller(value: Bytes) {
     this.set("seller", Value.fromBytes(value));
+  }
+
+  get quantity(): BigInt {
+    let value = this.get("quantity");
+    return value!.toBigInt();
+  }
+
+  set quantity(value: BigInt) {
+    this.set("quantity", Value.fromBigInt(value));
   }
 
   get price(): BigInt {

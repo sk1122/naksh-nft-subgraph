@@ -4,6 +4,7 @@ type NFTData @entity {
   tokenId: BigInt!
   tokenUri: String!
   title: String!
+  quantity: BigInt!
   description: String!
   artistName: String
   artistImg: String
@@ -12,6 +13,7 @@ type NFTData @entity {
   minter: BigInt
   saleData: SaleData
   auction: NFTAuction
+  erc721: Boolean!
 }
 
 type NFTAuction @entity {
@@ -19,6 +21,7 @@ type NFTAuction @entity {
   startTime: BigInt!
   endTime: BigInt!
   tokenId: BigInt!
+  quantity: BigInt!
   nft: NFTData!
   owner: Bytes!
   price: BigInt!
@@ -30,6 +33,7 @@ type NFTAuction @entity {
 type SaleData @entity {
   id: ID!
   nft: NFTData!
+  quantity: BigInt!
   auction: NFTAuction
   isOnSale: Boolean!
   tokenFirstSale: Boolean!
@@ -53,6 +57,7 @@ type Collection @entity {
   nftAddress: Bytes!
   creator: Bytes!
   royaltyPerc: BigInt!
+  erc721: Boolean!
   description: String
   logo: String
   instagram: String
@@ -69,6 +74,7 @@ type SoldNFT @entity {
   id: ID!
   buyer: Bytes!
   seller: Bytes!
+  quantity: BigInt!
   price: BigInt!
   nft: NFTData!
   timestamp: BigInt!
