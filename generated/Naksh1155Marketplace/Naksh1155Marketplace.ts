@@ -191,26 +191,34 @@ export class Naksh1155Marketplace__getNFTonSaleResultValue0NftStruct extends eth
     return this[2].toBigInt();
   }
 
-  get tokenUri(): string {
+  get imgUri(): string {
     return this[3].toString();
   }
 
-  get title(): string {
+  get videoUri(): string {
     return this[4].toString();
   }
 
-  get description(): string {
+  get title(): string {
     return this[5].toString();
+  }
+
+  get description(): string {
+    return this[6].toString();
+  }
+
+  get isVideo(): boolean {
+    return this[7].toBoolean();
   }
 
   get artist(): Naksh1155Marketplace__getNFTonSaleResultValue0NftArtistStruct {
     return changetype<
       Naksh1155Marketplace__getNFTonSaleResultValue0NftArtistStruct
-    >(this[6].toTuple());
+    >(this[8].toTuple());
   }
 
   get mintedBy(): i32 {
-    return this[7].toI32();
+    return this[9].toI32();
   }
 }
 
@@ -273,26 +281,34 @@ export class Naksh1155Marketplace__getSaleDataResultValue0NftStruct extends ethe
     return this[2].toBigInt();
   }
 
-  get tokenUri(): string {
+  get imgUri(): string {
     return this[3].toString();
   }
 
-  get title(): string {
+  get videoUri(): string {
     return this[4].toString();
   }
 
-  get description(): string {
+  get title(): string {
     return this[5].toString();
+  }
+
+  get description(): string {
+    return this[6].toString();
+  }
+
+  get isVideo(): boolean {
+    return this[7].toBoolean();
   }
 
   get artist(): Naksh1155Marketplace__getSaleDataResultValue0NftArtistStruct {
     return changetype<
       Naksh1155Marketplace__getSaleDataResultValue0NftArtistStruct
-    >(this[6].toTuple());
+    >(this[8].toTuple());
   }
 
   get mintedBy(): i32 {
-    return this[7].toI32();
+    return this[9].toI32();
   }
 }
 
@@ -323,26 +339,34 @@ export class Naksh1155Marketplace__saleDataResultNftStruct extends ethereum.Tupl
     return this[2].toBigInt();
   }
 
-  get tokenUri(): string {
+  get imgUri(): string {
     return this[3].toString();
   }
 
-  get title(): string {
+  get videoUri(): string {
     return this[4].toString();
   }
 
-  get description(): string {
+  get title(): string {
     return this[5].toString();
+  }
+
+  get description(): string {
+    return this[6].toString();
+  }
+
+  get isVideo(): boolean {
+    return this[7].toBoolean();
   }
 
   get artist(): Naksh1155Marketplace__saleDataResultNftArtistStruct {
     return changetype<Naksh1155Marketplace__saleDataResultNftArtistStruct>(
-      this[6].toTuple()
+      this[8].toTuple()
     );
   }
 
   get mintedBy(): i32 {
-    return this[7].toI32();
+    return this[9].toI32();
   }
 }
 
@@ -454,7 +478,7 @@ export class Naksh1155Marketplace extends ethereum.SmartContract {
   getNFTonSale(): Array<Naksh1155Marketplace__getNFTonSaleResultValue0Struct> {
     let result = super.call(
       "getNFTonSale",
-      "getNFTonSale():(((address,uint256,uint256,string,string,string,(string,address,string),uint8),address,bool,uint256,bool,uint256,uint8)[])",
+      "getNFTonSale():(((address,uint256,uint256,string,string,string,string,bool,(string,address,string),uint8),address,bool,uint256,bool,uint256,uint8)[])",
       []
     );
 
@@ -468,7 +492,7 @@ export class Naksh1155Marketplace extends ethereum.SmartContract {
   > {
     let result = super.tryCall(
       "getNFTonSale",
-      "getNFTonSale():(((address,uint256,uint256,string,string,string,(string,address,string),uint8),address,bool,uint256,bool,uint256,uint8)[])",
+      "getNFTonSale():(((address,uint256,uint256,string,string,string,string,bool,(string,address,string),uint8),address,bool,uint256,bool,uint256,uint8)[])",
       []
     );
     if (result.reverted) {
@@ -489,7 +513,7 @@ export class Naksh1155Marketplace extends ethereum.SmartContract {
   ): Naksh1155Marketplace__getSaleDataResultValue0Struct {
     let result = super.call(
       "getSaleData",
-      "getSaleData(address,uint256,address):(((address,uint256,uint256,string,string,string,(string,address,string),uint8),address,bool,uint256,bool,uint256,uint8))",
+      "getSaleData(address,uint256,address):(((address,uint256,uint256,string,string,string,string,bool,(string,address,string),uint8),address,bool,uint256,bool,uint256,uint8))",
       [
         ethereum.Value.fromAddress(_nft),
         ethereum.Value.fromUnsignedBigInt(_tokenId),
@@ -509,7 +533,7 @@ export class Naksh1155Marketplace extends ethereum.SmartContract {
   ): ethereum.CallResult<Naksh1155Marketplace__getSaleDataResultValue0Struct> {
     let result = super.tryCall(
       "getSaleData",
-      "getSaleData(address,uint256,address):(((address,uint256,uint256,string,string,string,(string,address,string),uint8),address,bool,uint256,bool,uint256,uint8))",
+      "getSaleData(address,uint256,address):(((address,uint256,uint256,string,string,string,string,bool,(string,address,string),uint8),address,bool,uint256,bool,uint256,uint8))",
       [
         ethereum.Value.fromAddress(_nft),
         ethereum.Value.fromUnsignedBigInt(_tokenId),
@@ -717,7 +741,7 @@ export class Naksh1155Marketplace extends ethereum.SmartContract {
   ): Naksh1155Marketplace__saleDataResult {
     let result = super.call(
       "saleData",
-      "saleData(address,uint256,address):((address,uint256,uint256,string,string,string,(string,address,string),uint8),address,bool,uint256,bool,uint256,uint8)",
+      "saleData(address,uint256,address):((address,uint256,uint256,string,string,string,string,bool,(string,address,string),uint8),address,bool,uint256,bool,uint256,uint8)",
       [
         ethereum.Value.fromAddress(param0),
         ethereum.Value.fromUnsignedBigInt(param1),
@@ -747,7 +771,7 @@ export class Naksh1155Marketplace extends ethereum.SmartContract {
   ): ethereum.CallResult<Naksh1155Marketplace__saleDataResult> {
     let result = super.tryCall(
       "saleData",
-      "saleData(address,uint256,address):((address,uint256,uint256,string,string,string,(string,address,string),uint8),address,bool,uint256,bool,uint256,uint8)",
+      "saleData(address,uint256,address):((address,uint256,uint256,string,string,string,string,bool,(string,address,string),uint8),address,bool,uint256,bool,uint256,uint8)",
       [
         ethereum.Value.fromAddress(param0),
         ethereum.Value.fromUnsignedBigInt(param1),

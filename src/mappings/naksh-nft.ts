@@ -7,7 +7,7 @@ export function handleMint(event: Mint): void {
 
     nft.nftAddress = event.address
     nft.tokenId = event.params.tokenId
-    nft.tokenUri = event.params.tokenURI
+    nft.tokenUri = event.params.imgURI
     nft.title = event.params.title
     nft.description = event.params.description
     nft.artistName = event.params.creator.toHexString()
@@ -17,6 +17,8 @@ export function handleMint(event: Mint): void {
     nft.artistImg = event.params.artistImg
     nft.quantity = BigInt.fromI32(1)
     nft.erc721 = true
+    nft.isVideo = event.params.isVideo
+    nft.videoUri = event.params.videoURI
 
     nft.save()
 }
@@ -26,7 +28,7 @@ export function handleTransfer(event: Transfer): void {
 
     if(!nft) return
 
-    if(event.params.to != Address.fromHexString("0x9D03DF8e0F7898421D9A8C26e44cb4EB67cD9334")) {
+    if(event.params.to != Address.fromHexString("0xa81D760658C15904281eE25a0cf8Ded505A2E172")) {
         nft.owner = event.params.to
     
         nft.save()

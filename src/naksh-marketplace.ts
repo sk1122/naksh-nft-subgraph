@@ -26,6 +26,9 @@ export function handleBidding(event: Bidding): void {
 
   let bids = auction.bids
 
+  auction.highestBid = event.params._amount
+  auction.highestBidder = event.params._bidder
+
   if(!bids) {
     bids = [bid.id]
 

@@ -125,38 +125,6 @@ export class NakshFactory extends ethereum.SmartContract {
     return new NakshFactory("NakshFactory", address);
   }
 
-  artistCollections(param0: Address, param1: BigInt): Address {
-    let result = super.call(
-      "artistCollections",
-      "artistCollections(address,uint256):(address)",
-      [
-        ethereum.Value.fromAddress(param0),
-        ethereum.Value.fromUnsignedBigInt(param1)
-      ]
-    );
-
-    return result[0].toAddress();
-  }
-
-  try_artistCollections(
-    param0: Address,
-    param1: BigInt
-  ): ethereum.CallResult<Address> {
-    let result = super.tryCall(
-      "artistCollections",
-      "artistCollections(address,uint256):(address)",
-      [
-        ethereum.Value.fromAddress(param0),
-        ethereum.Value.fromUnsignedBigInt(param1)
-      ]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
-  }
-
   deployNftCollection(
     artist: NakshFactory__deployNftCollectionInputArtistStruct,
     collection: NakshFactory__deployNftCollectionInputCollectionStruct,

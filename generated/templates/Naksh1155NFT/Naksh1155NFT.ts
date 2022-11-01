@@ -79,24 +79,32 @@ export class Mint__Params {
     return this._event.parameters[2].value.toBigInt();
   }
 
-  get tokenURI(): string {
+  get imgURI(): string {
     return this._event.parameters[3].value.toString();
   }
 
-  get title(): string {
+  get videoURI(): string {
     return this._event.parameters[4].value.toString();
   }
 
-  get description(): string {
+  get title(): string {
     return this._event.parameters[5].value.toString();
   }
 
-  get artistName(): string {
+  get description(): string {
     return this._event.parameters[6].value.toString();
   }
 
-  get artistImg(): string {
+  get artistName(): string {
     return this._event.parameters[7].value.toString();
+  }
+
+  get artistImg(): string {
+    return this._event.parameters[8].value.toString();
+  }
+
+  get isVideo(): boolean {
+    return this._event.parameters[9].value.toBoolean();
   }
 }
 
@@ -333,26 +341,34 @@ export class Naksh1155NFT__getNFTDataResultValue0Struct extends ethereum.Tuple {
     return this[2].toBigInt();
   }
 
-  get tokenUri(): string {
+  get imgUri(): string {
     return this[3].toString();
   }
 
-  get title(): string {
+  get videoUri(): string {
     return this[4].toString();
   }
 
-  get description(): string {
+  get title(): string {
     return this[5].toString();
+  }
+
+  get description(): string {
+    return this[6].toString();
+  }
+
+  get isVideo(): boolean {
+    return this[7].toBoolean();
   }
 
   get artist(): Naksh1155NFT__getNFTDataResultValue0ArtistStruct {
     return changetype<Naksh1155NFT__getNFTDataResultValue0ArtistStruct>(
-      this[6].toTuple()
+      this[8].toTuple()
     );
   }
 
   get mintedBy(): i32 {
-    return this[7].toI32();
+    return this[9].toI32();
   }
 }
 
@@ -406,99 +422,6 @@ export class Naksh1155NFT__getRoyaltiesResult {
 
   get_sellerFeeInitial(): BigInt {
     return this.value3;
-  }
-}
-
-export class Naksh1155NFT__nftDataResultArtistStruct extends ethereum.Tuple {
-  get name(): string {
-    return this[0].toString();
-  }
-
-  get artistAddress(): Address {
-    return this[1].toAddress();
-  }
-
-  get imageUrl(): string {
-    return this[2].toString();
-  }
-}
-
-export class Naksh1155NFT__nftDataResult {
-  value0: Address;
-  value1: BigInt;
-  value2: BigInt;
-  value3: string;
-  value4: string;
-  value5: string;
-  value6: Naksh1155NFT__nftDataResultArtistStruct;
-  value7: i32;
-
-  constructor(
-    value0: Address,
-    value1: BigInt,
-    value2: BigInt,
-    value3: string,
-    value4: string,
-    value5: string,
-    value6: Naksh1155NFT__nftDataResultArtistStruct,
-    value7: i32
-  ) {
-    this.value0 = value0;
-    this.value1 = value1;
-    this.value2 = value2;
-    this.value3 = value3;
-    this.value4 = value4;
-    this.value5 = value5;
-    this.value6 = value6;
-    this.value7 = value7;
-  }
-
-  toMap(): TypedMap<string, ethereum.Value> {
-    let map = new TypedMap<string, ethereum.Value>();
-    map.set("value0", ethereum.Value.fromAddress(this.value0));
-    map.set("value1", ethereum.Value.fromUnsignedBigInt(this.value1));
-    map.set("value2", ethereum.Value.fromUnsignedBigInt(this.value2));
-    map.set("value3", ethereum.Value.fromString(this.value3));
-    map.set("value4", ethereum.Value.fromString(this.value4));
-    map.set("value5", ethereum.Value.fromString(this.value5));
-    map.set("value6", ethereum.Value.fromTuple(this.value6));
-    map.set(
-      "value7",
-      ethereum.Value.fromUnsignedBigInt(BigInt.fromI32(this.value7))
-    );
-    return map;
-  }
-
-  getNftAddress(): Address {
-    return this.value0;
-  }
-
-  getTokenId(): BigInt {
-    return this.value1;
-  }
-
-  getAmount(): BigInt {
-    return this.value2;
-  }
-
-  getTokenUri(): string {
-    return this.value3;
-  }
-
-  getTitle(): string {
-    return this.value4;
-  }
-
-  getDescription(): string {
-    return this.value5;
-  }
-
-  getArtist(): Naksh1155NFT__nftDataResultArtistStruct {
-    return this.value6;
-  }
-
-  getMintedBy(): i32 {
-    return this.value7;
   }
 }
 
@@ -617,27 +540,36 @@ export class Naksh1155NFT extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toI32());
   }
 
-  creatorWhitelist(param0: Address): boolean {
+  creatorTokens(param0: Address, param1: BigInt): BigInt {
     let result = super.call(
-      "creatorWhitelist",
-      "creatorWhitelist(address):(bool)",
-      [ethereum.Value.fromAddress(param0)]
+      "creatorTokens",
+      "creatorTokens(address,uint256):(uint256)",
+      [
+        ethereum.Value.fromAddress(param0),
+        ethereum.Value.fromUnsignedBigInt(param1)
+      ]
     );
 
-    return result[0].toBoolean();
+    return result[0].toBigInt();
   }
 
-  try_creatorWhitelist(param0: Address): ethereum.CallResult<boolean> {
+  try_creatorTokens(
+    param0: Address,
+    param1: BigInt
+  ): ethereum.CallResult<BigInt> {
     let result = super.tryCall(
-      "creatorWhitelist",
-      "creatorWhitelist(address):(bool)",
-      [ethereum.Value.fromAddress(param0)]
+      "creatorTokens",
+      "creatorTokens(address,uint256):(uint256)",
+      [
+        ethereum.Value.fromAddress(param0),
+        ethereum.Value.fromUnsignedBigInt(param1)
+      ]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
     }
     let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBoolean());
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
   creators(param0: BigInt): Address {
@@ -747,7 +679,7 @@ export class Naksh1155NFT extends ethereum.SmartContract {
   getNFTData(_tokenId: BigInt): Naksh1155NFT__getNFTDataResultValue0Struct {
     let result = super.call(
       "getNFTData",
-      "getNFTData(uint256):((address,uint256,uint256,string,string,string,(string,address,string),uint8))",
+      "getNFTData(uint256):((address,uint256,uint256,string,string,string,string,bool,(string,address,string),uint8))",
       [ethereum.Value.fromUnsignedBigInt(_tokenId)]
     );
 
@@ -761,7 +693,7 @@ export class Naksh1155NFT extends ethereum.SmartContract {
   ): ethereum.CallResult<Naksh1155NFT__getNFTDataResultValue0Struct> {
     let result = super.tryCall(
       "getNFTData",
-      "getNFTData(uint256):((address,uint256,uint256,string,string,string,(string,address,string),uint8))",
+      "getNFTData(uint256):((address,uint256,uint256,string,string,string,string,bool,(string,address,string),uint8))",
       [ethereum.Value.fromUnsignedBigInt(_tokenId)]
     );
     if (result.reverted) {
@@ -891,51 +823,6 @@ export class Naksh1155NFT extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toString());
-  }
-
-  nftData(param0: BigInt): Naksh1155NFT__nftDataResult {
-    let result = super.call(
-      "nftData",
-      "nftData(uint256):(address,uint256,uint256,string,string,string,(string,address,string),uint8)",
-      [ethereum.Value.fromUnsignedBigInt(param0)]
-    );
-
-    return new Naksh1155NFT__nftDataResult(
-      result[0].toAddress(),
-      result[1].toBigInt(),
-      result[2].toBigInt(),
-      result[3].toString(),
-      result[4].toString(),
-      result[5].toString(),
-      changetype<Naksh1155NFT__nftDataResultArtistStruct>(result[6].toTuple()),
-      result[7].toI32()
-    );
-  }
-
-  try_nftData(
-    param0: BigInt
-  ): ethereum.CallResult<Naksh1155NFT__nftDataResult> {
-    let result = super.tryCall(
-      "nftData",
-      "nftData(uint256):(address,uint256,uint256,string,string,string,(string,address,string),uint8)",
-      [ethereum.Value.fromUnsignedBigInt(param0)]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(
-      new Naksh1155NFT__nftDataResult(
-        value[0].toAddress(),
-        value[1].toBigInt(),
-        value[2].toBigInt(),
-        value[3].toString(),
-        value[4].toString(),
-        value[5].toString(),
-        changetype<Naksh1155NFT__nftDataResultArtistStruct>(value[6].toTuple()),
-        value[7].toI32()
-      )
-    );
   }
 
   orgFee(): BigInt {
@@ -1181,10 +1068,6 @@ export class ConstructorCall__Inputs {
   get _creators(): Array<Address> {
     return this._call.inputValues[4].value.toAddressArray();
   }
-
-  get _totalCreatorFees(): BigInt {
-    return this._call.inputValues[5].value.toBigInt();
-  }
 }
 
 export class ConstructorCall__Outputs {
@@ -1352,28 +1235,36 @@ export class MintByArtistOrAdminCall__Inputs {
     return this._call.inputValues[0].value.toAddress();
   }
 
-  get _tokenURI(): string {
+  get _imgURI(): string {
     return this._call.inputValues[1].value.toString();
   }
 
+  get _videoURI(): string {
+    return this._call.inputValues[2].value.toString();
+  }
+
   get _amount(): BigInt {
-    return this._call.inputValues[2].value.toBigInt();
+    return this._call.inputValues[3].value.toBigInt();
   }
 
   get title(): string {
-    return this._call.inputValues[3].value.toString();
-  }
-
-  get description(): string {
     return this._call.inputValues[4].value.toString();
   }
 
-  get artistName(): string {
+  get description(): string {
     return this._call.inputValues[5].value.toString();
   }
 
-  get artistImg(): string {
+  get artistName(): string {
     return this._call.inputValues[6].value.toString();
+  }
+
+  get artistImg(): string {
+    return this._call.inputValues[7].value.toString();
+  }
+
+  get isVideo(): boolean {
+    return this._call.inputValues[8].value.toBoolean();
   }
 }
 

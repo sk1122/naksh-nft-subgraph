@@ -207,6 +207,32 @@ export class NFTData extends Entity {
   set erc721(value: boolean) {
     this.set("erc721", Value.fromBoolean(value));
   }
+
+  get isVideo(): boolean {
+    let value = this.get("isVideo");
+    return value!.toBoolean();
+  }
+
+  set isVideo(value: boolean) {
+    this.set("isVideo", Value.fromBoolean(value));
+  }
+
+  get videoUri(): string | null {
+    let value = this.get("videoUri");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set videoUri(value: string | null) {
+    if (!value) {
+      this.unset("videoUri");
+    } else {
+      this.set("videoUri", Value.fromString(<string>value));
+    }
+  }
 }
 
 export class NFTAuction extends Entity {

@@ -14,6 +14,8 @@ type NFTData @entity {
   saleData: SaleData
   auction: NFTAuction
   erc721: Boolean!
+  isVideo: Boolean!
+  videoUri: String
 }
 
 type NFTAuction @entity {

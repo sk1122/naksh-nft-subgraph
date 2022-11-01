@@ -60,6 +60,8 @@ export function handleSold(event: Sold): void {
       newNft.owner = event.params._buyer
       newNft.quantity = event.params._amount
       newNft.erc721 = false
+      newNft.isVideo = nftEntity.isVideo
+      newNft.videoUri = nftEntity.videoUri
 
       newNft.save()
   }

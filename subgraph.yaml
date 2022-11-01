@@ -6,7 +6,7 @@ dataSources:
     name: NakshMarketplace
     network: mumbai
     source:
-      address: "0x9D03DF8e0F7898421D9A8C26e44cb4EB67cD9334"
+      address: "0xa81D760658C15904281eE25a0cf8Ded505A2E172"
       abi: NakshMarketplace
       startBlock: 28221561
     mapping:
@@ -46,9 +46,9 @@ dataSources:
     name: NakshFactory
     network: mumbai
     source:
-      address: "0x1e414FDe1b9F38a5b7Ff434B48F0Bf3c56ABdAAf"
+      address: "0x2c7e8aF0C3606D95801755C7C2078c49D5A28D3e"
       abi: NakshFactory
-      startBlock: 28221561
+      startBlock: 28905560
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -68,9 +68,9 @@ dataSources:
     name: NakshNFT
     network: mumbai
     source:
-      address: "0xA7F4AD36bD0eF14A21D8f50279323356f12c2e56"
+      address: "0xC5d1b758528933fe8567bfb99d44e8Fe73909FFE"
       abi: NakshNFT
-      startBlock: 28221561
+      startBlock: 28905455
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -82,7 +82,7 @@ dataSources:
         - name: NakshNFT
           file: ./abis/NakshNFT.json
       eventHandlers:
-        - event: Mint(address,uint256,string,string,string,string,string)
+        - event: Mint(address,uint256,string,string,string,string,string,string,bool)
           handler: handleMint
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransfer
@@ -91,7 +91,7 @@ dataSources:
     name: Naksh1155Marketplace
     network: mumbai
     source:
-      address: "0xa8562C4977e065De8f989FE74493861f1C3F9b34"
+      address: "0xeD96FBd91FD7D942Bb8635B44Bf5aE5DFfdE3519"
       abi: Naksh1155Marketplace
       startBlock: 28221561
     mapping:
@@ -123,9 +123,9 @@ dataSources:
     name: Naksh1155Factory
     network: mumbai
     source:
-      address: "0x01E778EC8732796538CCFE519A63bdA3Df729b2A"
+      address: "0x6817b377fdF9d5691755A6222F1Ec39C9b7bDA6c"
       abi: Naksh1155Factory
-      startBlock: 28221561
+      startBlock: 28905546
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -141,6 +141,29 @@ dataSources:
         - event: CollectionCreated(address,string,string,string,string,address)
           handler: handleCollectionCreated
       file: ./src/naksh-factory-1155.ts
+  - name: Naksh1155NFT
+    kind: ethereum/contract
+    network: mumbai
+    source:
+      address: "0x5A45F2cB5B794E19AC2Ac26fc8d1D3266420f6Dd"
+      abi: Naksh1155NFT
+      startBlock: 28905533
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      file: ./src/mappings/naksh-nft-1155.ts
+      entities:
+        - Mint
+        - TransferSingle
+      abis:
+        - name: Naksh1155NFT
+          file: ./abis/Naksh1155NFT.json
+      eventHandlers:
+        - event: Mint(address,uint256,uint256,string,string,string,string,string,string,bool)
+          handler: handleMint
+        - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleTransferSingle
 templates:
   - name: NakshNFT
     kind: ethereum/contract
@@ -154,11 +177,12 @@ templates:
       file: ./src/mappings/naksh-nft.ts
       entities:
         - Mint
+        - Transfer
       abis:
         - name: NakshNFT
           file: ./abis/NakshNFT.json
       eventHandlers:
-        - event: Mint(address,uint256,string,string,string,string,string)
+        - event: Mint(address,uint256,string,string,string,string,string,string,bool)
           handler: handleMint
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransfer
@@ -175,11 +199,12 @@ templates:
       file: ./src/mappings/naksh-nft-1155.ts
       entities:
         - Mint
+        - TransferSingle
       abis:
         - name: Naksh1155NFT
           file: ./abis/Naksh1155NFT.json
       eventHandlers:
-        - event: Mint(address,uint256,uint256,string,string,string,string,string)
+        - event: Mint(address,uint256,uint256,string,string,string,string,string,string,bool)
           handler: handleMint
         - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
           handler: handleTransferSingle

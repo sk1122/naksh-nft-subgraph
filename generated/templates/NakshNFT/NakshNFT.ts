@@ -101,24 +101,32 @@ export class Mint__Params {
     return this._event.parameters[1].value.toBigInt();
   }
 
-  get tokenURI(): string {
+  get imgURI(): string {
     return this._event.parameters[2].value.toString();
   }
 
-  get title(): string {
+  get videoURI(): string {
     return this._event.parameters[3].value.toString();
   }
 
-  get description(): string {
+  get title(): string {
     return this._event.parameters[4].value.toString();
   }
 
-  get artistName(): string {
+  get description(): string {
     return this._event.parameters[5].value.toString();
   }
 
-  get artistImg(): string {
+  get artistName(): string {
     return this._event.parameters[6].value.toString();
+  }
+
+  get artistImg(): string {
+    return this._event.parameters[7].value.toString();
+  }
+
+  get isVideo(): boolean {
+    return this._event.parameters[8].value.toBoolean();
   }
 }
 
@@ -278,6 +286,60 @@ export class NakshNFT__getCollectionDetailsResultValue0SocialStruct extends ethe
   }
 }
 
+export class NakshNFT__getMintedNFTsResultValue0Struct extends ethereum.Tuple {
+  get nftAddress(): Address {
+    return this[0].toAddress();
+  }
+
+  get tokenId(): BigInt {
+    return this[1].toBigInt();
+  }
+
+  get imgUri(): string {
+    return this[2].toString();
+  }
+
+  get videoUri(): string {
+    return this[3].toString();
+  }
+
+  get title(): string {
+    return this[4].toString();
+  }
+
+  get description(): string {
+    return this[5].toString();
+  }
+
+  get isVideo(): boolean {
+    return this[6].toBoolean();
+  }
+
+  get artist(): NakshNFT__getMintedNFTsResultValue0ArtistStruct {
+    return changetype<NakshNFT__getMintedNFTsResultValue0ArtistStruct>(
+      this[7].toTuple()
+    );
+  }
+
+  get mintedBy(): i32 {
+    return this[8].toI32();
+  }
+}
+
+export class NakshNFT__getMintedNFTsResultValue0ArtistStruct extends ethereum.Tuple {
+  get name(): string {
+    return this[0].toString();
+  }
+
+  get artistAddress(): Address {
+    return this[1].toAddress();
+  }
+
+  get imageUrl(): string {
+    return this[2].toString();
+  }
+}
+
 export class NakshNFT__getNFTDataResultValue0Struct extends ethereum.Tuple {
   get nftAddress(): Address {
     return this[0].toAddress();
@@ -287,26 +349,34 @@ export class NakshNFT__getNFTDataResultValue0Struct extends ethereum.Tuple {
     return this[1].toBigInt();
   }
 
-  get tokenUri(): string {
+  get imgUri(): string {
     return this[2].toString();
   }
 
-  get title(): string {
+  get videoUri(): string {
     return this[3].toString();
   }
 
-  get description(): string {
+  get title(): string {
     return this[4].toString();
+  }
+
+  get description(): string {
+    return this[5].toString();
+  }
+
+  get isVideo(): boolean {
+    return this[6].toBoolean();
   }
 
   get artist(): NakshNFT__getNFTDataResultValue0ArtistStruct {
     return changetype<NakshNFT__getNFTDataResultValue0ArtistStruct>(
-      this[5].toTuple()
+      this[7].toTuple()
     );
   }
 
   get mintedBy(): i32 {
-    return this[6].toI32();
+    return this[8].toI32();
   }
 }
 
@@ -360,91 +430,6 @@ export class NakshNFT__getRoyaltiesResult {
 
   get_sellerFeeInitial(): BigInt {
     return this.value3;
-  }
-}
-
-export class NakshNFT__nftDataResultArtistStruct extends ethereum.Tuple {
-  get name(): string {
-    return this[0].toString();
-  }
-
-  get artistAddress(): Address {
-    return this[1].toAddress();
-  }
-
-  get imageUrl(): string {
-    return this[2].toString();
-  }
-}
-
-export class NakshNFT__nftDataResult {
-  value0: Address;
-  value1: BigInt;
-  value2: string;
-  value3: string;
-  value4: string;
-  value5: NakshNFT__nftDataResultArtistStruct;
-  value6: i32;
-
-  constructor(
-    value0: Address,
-    value1: BigInt,
-    value2: string,
-    value3: string,
-    value4: string,
-    value5: NakshNFT__nftDataResultArtistStruct,
-    value6: i32
-  ) {
-    this.value0 = value0;
-    this.value1 = value1;
-    this.value2 = value2;
-    this.value3 = value3;
-    this.value4 = value4;
-    this.value5 = value5;
-    this.value6 = value6;
-  }
-
-  toMap(): TypedMap<string, ethereum.Value> {
-    let map = new TypedMap<string, ethereum.Value>();
-    map.set("value0", ethereum.Value.fromAddress(this.value0));
-    map.set("value1", ethereum.Value.fromUnsignedBigInt(this.value1));
-    map.set("value2", ethereum.Value.fromString(this.value2));
-    map.set("value3", ethereum.Value.fromString(this.value3));
-    map.set("value4", ethereum.Value.fromString(this.value4));
-    map.set("value5", ethereum.Value.fromTuple(this.value5));
-    map.set(
-      "value6",
-      ethereum.Value.fromUnsignedBigInt(BigInt.fromI32(this.value6))
-    );
-    return map;
-  }
-
-  getNftAddress(): Address {
-    return this.value0;
-  }
-
-  getTokenId(): BigInt {
-    return this.value1;
-  }
-
-  getTokenUri(): string {
-    return this.value2;
-  }
-
-  getTitle(): string {
-    return this.value3;
-  }
-
-  getDescription(): string {
-    return this.value4;
-  }
-
-  getArtist(): NakshNFT__nftDataResultArtistStruct {
-    return this.value5;
-  }
-
-  getMintedBy(): i32 {
-    return this.value6;
   }
 }
 
@@ -502,53 +487,6 @@ export class NakshNFT extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
-  bulkMintByArtist(
-    _tokenURI: Array<string>,
-    title: Array<string>,
-    description: Array<string>,
-    artistName: string,
-    artistImg: string
-  ): Array<BigInt> {
-    let result = super.call(
-      "bulkMintByArtist",
-      "bulkMintByArtist(string[],string[],string[],string,string):(uint256[])",
-      [
-        ethereum.Value.fromStringArray(_tokenURI),
-        ethereum.Value.fromStringArray(title),
-        ethereum.Value.fromStringArray(description),
-        ethereum.Value.fromString(artistName),
-        ethereum.Value.fromString(artistImg)
-      ]
-    );
-
-    return result[0].toBigIntArray();
-  }
-
-  try_bulkMintByArtist(
-    _tokenURI: Array<string>,
-    title: Array<string>,
-    description: Array<string>,
-    artistName: string,
-    artistImg: string
-  ): ethereum.CallResult<Array<BigInt>> {
-    let result = super.tryCall(
-      "bulkMintByArtist",
-      "bulkMintByArtist(string[],string[],string[],string,string):(uint256[])",
-      [
-        ethereum.Value.fromStringArray(_tokenURI),
-        ethereum.Value.fromStringArray(title),
-        ethereum.Value.fromStringArray(description),
-        ethereum.Value.fromString(artistName),
-        ethereum.Value.fromString(artistImg)
-      ]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigIntArray());
-  }
-
   creatorFees(param0: BigInt): i32 {
     let result = super.call("creatorFees", "creatorFees(uint256):(uint16)", [
       ethereum.Value.fromUnsignedBigInt(param0)
@@ -568,27 +506,36 @@ export class NakshNFT extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toI32());
   }
 
-  creatorWhitelist(param0: Address): boolean {
+  creatorTokens(param0: Address, param1: BigInt): BigInt {
     let result = super.call(
-      "creatorWhitelist",
-      "creatorWhitelist(address):(bool)",
-      [ethereum.Value.fromAddress(param0)]
+      "creatorTokens",
+      "creatorTokens(address,uint256):(uint256)",
+      [
+        ethereum.Value.fromAddress(param0),
+        ethereum.Value.fromUnsignedBigInt(param1)
+      ]
     );
 
-    return result[0].toBoolean();
+    return result[0].toBigInt();
   }
 
-  try_creatorWhitelist(param0: Address): ethereum.CallResult<boolean> {
+  try_creatorTokens(
+    param0: Address,
+    param1: BigInt
+  ): ethereum.CallResult<BigInt> {
     let result = super.tryCall(
-      "creatorWhitelist",
-      "creatorWhitelist(address):(bool)",
-      [ethereum.Value.fromAddress(param0)]
+      "creatorTokens",
+      "creatorTokens(address,uint256):(uint256)",
+      [
+        ethereum.Value.fromAddress(param0),
+        ethereum.Value.fromUnsignedBigInt(param1)
+      ]
     );
     if (result.reverted) {
       return new ethereum.CallResult();
     }
     let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBoolean());
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
   }
 
   creators(param0: BigInt): Address {
@@ -714,10 +661,37 @@ export class NakshNFT extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toI32Array());
   }
 
+  getMintedNFTs(): Array<NakshNFT__getMintedNFTsResultValue0Struct> {
+    let result = super.call(
+      "getMintedNFTs",
+      "getMintedNFTs():((address,uint256,string,string,string,string,bool,(string,address,string),uint8)[])",
+      []
+    );
+
+    return result[0].toTupleArray<NakshNFT__getMintedNFTsResultValue0Struct>();
+  }
+
+  try_getMintedNFTs(): ethereum.CallResult<
+    Array<NakshNFT__getMintedNFTsResultValue0Struct>
+  > {
+    let result = super.tryCall(
+      "getMintedNFTs",
+      "getMintedNFTs():((address,uint256,string,string,string,string,bool,(string,address,string),uint8)[])",
+      []
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(
+      value[0].toTupleArray<NakshNFT__getMintedNFTsResultValue0Struct>()
+    );
+  }
+
   getNFTData(_tokenId: BigInt): NakshNFT__getNFTDataResultValue0Struct {
     let result = super.call(
       "getNFTData",
-      "getNFTData(uint256):((address,uint256,string,string,string,(string,address,string),uint8))",
+      "getNFTData(uint256):((address,uint256,string,string,string,string,bool,(string,address,string),uint8))",
       [ethereum.Value.fromUnsignedBigInt(_tokenId)]
     );
 
@@ -731,7 +705,7 @@ export class NakshNFT extends ethereum.SmartContract {
   ): ethereum.CallResult<NakshNFT__getNFTDataResultValue0Struct> {
     let result = super.tryCall(
       "getNFTData",
-      "getNFTData(uint256):((address,uint256,string,string,string,(string,address,string),uint8))",
+      "getNFTData(uint256):((address,uint256,string,string,string,string,bool,(string,address,string),uint8))",
       [ethereum.Value.fromUnsignedBigInt(_tokenId)]
     );
     if (result.reverted) {
@@ -842,57 +816,6 @@ export class NakshNFT extends ethereum.SmartContract {
     return ethereum.CallResult.fromValue(value[0].toBoolean());
   }
 
-  mintByArtistOrAdmin(
-    _creator: Address,
-    _tokenURI: string,
-    title: string,
-    description: string,
-    artistName: string,
-    artistImg: string
-  ): BigInt {
-    let result = super.call(
-      "mintByArtistOrAdmin",
-      "mintByArtistOrAdmin(address,string,string,string,string,string):(uint256)",
-      [
-        ethereum.Value.fromAddress(_creator),
-        ethereum.Value.fromString(_tokenURI),
-        ethereum.Value.fromString(title),
-        ethereum.Value.fromString(description),
-        ethereum.Value.fromString(artistName),
-        ethereum.Value.fromString(artistImg)
-      ]
-    );
-
-    return result[0].toBigInt();
-  }
-
-  try_mintByArtistOrAdmin(
-    _creator: Address,
-    _tokenURI: string,
-    title: string,
-    description: string,
-    artistName: string,
-    artistImg: string
-  ): ethereum.CallResult<BigInt> {
-    let result = super.tryCall(
-      "mintByArtistOrAdmin",
-      "mintByArtistOrAdmin(address,string,string,string,string,string):(uint256)",
-      [
-        ethereum.Value.fromAddress(_creator),
-        ethereum.Value.fromString(_tokenURI),
-        ethereum.Value.fromString(title),
-        ethereum.Value.fromString(description),
-        ethereum.Value.fromString(artistName),
-        ethereum.Value.fromString(artistImg)
-      ]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toBigInt());
-  }
-
   name(): string {
     let result = super.call("name", "name():(string)", []);
 
@@ -906,47 +829,6 @@ export class NakshNFT extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toString());
-  }
-
-  nftData(param0: BigInt): NakshNFT__nftDataResult {
-    let result = super.call(
-      "nftData",
-      "nftData(uint256):(address,uint256,string,string,string,(string,address,string),uint8)",
-      [ethereum.Value.fromUnsignedBigInt(param0)]
-    );
-
-    return new NakshNFT__nftDataResult(
-      result[0].toAddress(),
-      result[1].toBigInt(),
-      result[2].toString(),
-      result[3].toString(),
-      result[4].toString(),
-      changetype<NakshNFT__nftDataResultArtistStruct>(result[5].toTuple()),
-      result[6].toI32()
-    );
-  }
-
-  try_nftData(param0: BigInt): ethereum.CallResult<NakshNFT__nftDataResult> {
-    let result = super.tryCall(
-      "nftData",
-      "nftData(uint256):(address,uint256,string,string,string,(string,address,string),uint8)",
-      [ethereum.Value.fromUnsignedBigInt(param0)]
-    );
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(
-      new NakshNFT__nftDataResult(
-        value[0].toAddress(),
-        value[1].toBigInt(),
-        value[2].toString(),
-        value[3].toString(),
-        value[4].toString(),
-        changetype<NakshNFT__nftDataResultArtistStruct>(value[5].toTuple()),
-        value[6].toI32()
-      )
-    );
   }
 
   orgFee(): BigInt {
@@ -981,21 +863,6 @@ export class NakshNFT extends ethereum.SmartContract {
     }
     let value = result.value;
     return ethereum.CallResult.fromValue(value[0].toBigInt());
-  }
-
-  owner(): Address {
-    let result = super.call("owner", "owner():(address)", []);
-
-    return result[0].toAddress();
-  }
-
-  try_owner(): ethereum.CallResult<Address> {
-    let result = super.tryCall("owner", "owner():(address)", []);
-    if (result.reverted) {
-      return new ethereum.CallResult();
-    }
-    let value = result.value;
-    return ethereum.CallResult.fromValue(value[0].toAddress());
   }
 
   ownerOf(tokenId: BigInt): Address {
@@ -1215,24 +1082,16 @@ export class ConstructorCall__Inputs {
     );
   }
 
-  get _owner(): Address {
+  get _admin(): Address {
     return this._call.inputValues[2].value.toAddress();
   }
 
-  get _admin(): Address {
-    return this._call.inputValues[3].value.toAddress();
-  }
-
   get _creatorFees(): Array<i32> {
-    return this._call.inputValues[4].value.toI32Array();
+    return this._call.inputValues[3].value.toI32Array();
   }
 
   get _creators(): Array<Address> {
-    return this._call.inputValues[5].value.toAddressArray();
-  }
-
-  get _totalCreatorFees(): BigInt {
-    return this._call.inputValues[6].value.toBigInt();
+    return this._call.inputValues[4].value.toAddressArray();
   }
 }
 
@@ -1346,53 +1205,61 @@ export class ApproveCall__Outputs {
   }
 }
 
-export class BulkMintByArtistCall extends ethereum.Call {
-  get inputs(): BulkMintByArtistCall__Inputs {
-    return new BulkMintByArtistCall__Inputs(this);
+export class BulkMintByArtistorAdminCall extends ethereum.Call {
+  get inputs(): BulkMintByArtistorAdminCall__Inputs {
+    return new BulkMintByArtistorAdminCall__Inputs(this);
   }
 
-  get outputs(): BulkMintByArtistCall__Outputs {
-    return new BulkMintByArtistCall__Outputs(this);
+  get outputs(): BulkMintByArtistorAdminCall__Outputs {
+    return new BulkMintByArtistorAdminCall__Outputs(this);
   }
 }
 
-export class BulkMintByArtistCall__Inputs {
-  _call: BulkMintByArtistCall;
+export class BulkMintByArtistorAdminCall__Inputs {
+  _call: BulkMintByArtistorAdminCall;
 
-  constructor(call: BulkMintByArtistCall) {
+  constructor(call: BulkMintByArtistorAdminCall) {
     this._call = call;
   }
 
-  get _tokenURI(): Array<string> {
-    return this._call.inputValues[0].value.toStringArray();
+  get _creator(): Address {
+    return this._call.inputValues[0].value.toAddress();
   }
 
-  get title(): Array<string> {
+  get _imgURI(): Array<string> {
     return this._call.inputValues[1].value.toStringArray();
   }
 
-  get description(): Array<string> {
+  get _videoURI(): Array<string> {
     return this._call.inputValues[2].value.toStringArray();
   }
 
+  get title(): Array<string> {
+    return this._call.inputValues[3].value.toStringArray();
+  }
+
+  get description(): Array<string> {
+    return this._call.inputValues[4].value.toStringArray();
+  }
+
   get artistName(): string {
-    return this._call.inputValues[3].value.toString();
+    return this._call.inputValues[5].value.toString();
   }
 
   get artistImg(): string {
-    return this._call.inputValues[4].value.toString();
+    return this._call.inputValues[6].value.toString();
+  }
+
+  get isVideo(): Array<boolean> {
+    return this._call.inputValues[7].value.toBooleanArray();
   }
 }
 
-export class BulkMintByArtistCall__Outputs {
-  _call: BulkMintByArtistCall;
+export class BulkMintByArtistorAdminCall__Outputs {
+  _call: BulkMintByArtistorAdminCall;
 
-  constructor(call: BulkMintByArtistCall) {
+  constructor(call: BulkMintByArtistorAdminCall) {
     this._call = call;
-  }
-
-  get _tokenId(): Array<BigInt> {
-    return this._call.outputValues[0].value.toBigIntArray();
   }
 }
 
@@ -1422,32 +1289,6 @@ export class BurnCall__Outputs {
   _call: BurnCall;
 
   constructor(call: BurnCall) {
-    this._call = call;
-  }
-}
-
-export class ClaimContractOwnershipCall extends ethereum.Call {
-  get inputs(): ClaimContractOwnershipCall__Inputs {
-    return new ClaimContractOwnershipCall__Inputs(this);
-  }
-
-  get outputs(): ClaimContractOwnershipCall__Outputs {
-    return new ClaimContractOwnershipCall__Outputs(this);
-  }
-}
-
-export class ClaimContractOwnershipCall__Inputs {
-  _call: ClaimContractOwnershipCall;
-
-  constructor(call: ClaimContractOwnershipCall) {
-    this._call = call;
-  }
-}
-
-export class ClaimContractOwnershipCall__Outputs {
-  _call: ClaimContractOwnershipCall;
-
-  constructor(call: ClaimContractOwnershipCall) {
     this._call = call;
   }
 }
@@ -1482,36 +1323,6 @@ export class GrantAdminRightsCall__Outputs {
   }
 }
 
-export class GrantContractOwnershipCall extends ethereum.Call {
-  get inputs(): GrantContractOwnershipCall__Inputs {
-    return new GrantContractOwnershipCall__Inputs(this);
-  }
-
-  get outputs(): GrantContractOwnershipCall__Outputs {
-    return new GrantContractOwnershipCall__Outputs(this);
-  }
-}
-
-export class GrantContractOwnershipCall__Inputs {
-  _call: GrantContractOwnershipCall;
-
-  constructor(call: GrantContractOwnershipCall) {
-    this._call = call;
-  }
-
-  get newOwner(): Address {
-    return this._call.inputValues[0].value.toAddress();
-  }
-}
-
-export class GrantContractOwnershipCall__Outputs {
-  _call: GrantContractOwnershipCall;
-
-  constructor(call: GrantContractOwnershipCall) {
-    this._call = call;
-  }
-}
-
 export class MintByArtistOrAdminCall extends ethereum.Call {
   get inputs(): MintByArtistOrAdminCall__Inputs {
     return new MintByArtistOrAdminCall__Inputs(this);
@@ -1533,24 +1344,32 @@ export class MintByArtistOrAdminCall__Inputs {
     return this._call.inputValues[0].value.toAddress();
   }
 
-  get _tokenURI(): string {
+  get _imgURI(): string {
     return this._call.inputValues[1].value.toString();
   }
 
-  get title(): string {
+  get _videoURI(): string {
     return this._call.inputValues[2].value.toString();
   }
 
-  get description(): string {
+  get title(): string {
     return this._call.inputValues[3].value.toString();
   }
 
-  get artistName(): string {
+  get description(): string {
     return this._call.inputValues[4].value.toString();
   }
 
-  get artistImg(): string {
+  get artistName(): string {
     return this._call.inputValues[5].value.toString();
+  }
+
+  get artistImg(): string {
+    return this._call.inputValues[6].value.toString();
+  }
+
+  get isVideo(): boolean {
+    return this._call.inputValues[7].value.toBoolean();
   }
 }
 
@@ -1559,10 +1378,6 @@ export class MintByArtistOrAdminCall__Outputs {
 
   constructor(call: MintByArtistOrAdminCall) {
     this._call = call;
-  }
-
-  get _tokenId(): BigInt {
-    return this._call.outputValues[0].value.toBigInt();
   }
 }
 
